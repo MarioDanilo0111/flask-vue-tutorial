@@ -37,5 +37,5 @@ npm sun serve
 
 ### Usage
 
-Backend: Navigate to http://localhost:5000 to access the Flask API.
+Backend: Navigate to http://localhost:5001 to access the Flask API.
 Frontend: Navigate to http://localhost:8080 to view the Vue.js application.
