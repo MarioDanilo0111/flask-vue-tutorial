@@ -4,9 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "==2.0.1"
-flask-cors = "==3.0.10"
-werkzeug = "==2.0.3"
+flask = "*"
+flask-cors = "*"
+werkzeug = "*"
+jinja2 = "*"
 
 [dev-packages]
 
