@@ -28,19 +28,26 @@
               </tr>
             </thead>
             <!-- Table Body -->
-            <tbody></tbody>
-            <tr>
-              <td>Game 1</td>
-              <td>Genre 1</td>
-              <td>Yes</td>
-              <td>Player 1</td>
-              <td class="btn-group" role="group">
-                <button type="button" class="btn btn-info btn-sm">Edit</button>
-                <button type="button" class="btn btn-danger btn-sm">
-                  Delete
-                </button>
-              </td>
-            </tr>
+            <tbody>
+              <tr v-for="(game, index) in games" :key="index">
+                <td>{{ game.title }}</td>
+                <td>{{ game.genre }}</td>
+                <td>
+                  <span v-if="game.played">Yes</span>
+                  <span v-else>No</span>
+                </td>
+                <td>
+                  <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info btn-sm">
+                      Edit
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -49,7 +56,29 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  name: "GamesLibraryComponent",
+  data() {
+    return {
+      games: [],
+    };
+  },
+  methods: {
+    getGames() {
+      const path = "http://localhost:5001/games";
+      axios
+        .get(path)
+        .then((res) => {
+          console.log("Respons data: ", res.data);
+          this.games = res.data.games;
+        })
+        .catch((err) => {
+          console.error("Error fetching games: ", err);
+        });
+    },
+  },
+  created() {
+    this.getGames();
+  },
 };
 </script>
