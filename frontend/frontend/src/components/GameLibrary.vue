@@ -8,6 +8,12 @@
         integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
         crossorigin="anonymous"
       />
+      <!-- <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
+        integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
+        crossorigin="anonymous"
+      /> -->
       <div class="row">
         <div class="col-sm-12">
           <h1
@@ -19,7 +25,20 @@
           <hr />
           <br />
           <!-- Alert Message -->
-          <button type="button" class="btn btn-success btn-sm">add Game</button>
+          <b-alert
+            variant="success"
+            :show="showMessage"
+            @dismissed="showMessage = false"
+          >
+            {{ message }}
+          </b-alert>
+          <button
+            type="button"
+            class="btn btn-success btn-sm"
+            v-b-modal.game-modal
+          >
+            add Game
+          </button>
           <br /><br />
           <table class="table table-hover">
             <!-- Table Header -->
@@ -81,12 +100,12 @@
               type="text"
               v-model="addGameForm.title"
               required
-              placeholder="Enter Game"
+              placeholder="Enter Title"
             ></b-form-input>
           </b-form-group>
 
           <b-form-group
-            id="form-Genre-group"
+            id="form-genre-group"
             label="Genre:"
             label-for="form-genre-input"
           >
@@ -100,7 +119,7 @@
           </b-form-group>
 
           <!-- Checkbox -->
-          <b-form-group id="form-play-group">
+          <b-form-group id="form-played-group">
             <b-form-checkbox-group
               v-model="addGameForm.played"
               id="form-checks"
@@ -109,8 +128,8 @@
             </b-form-checkbox-group>
           </b-form-group>
           <!-- Buttons: submit and reset -->
-          <button type="submit" variant="primary">Submit</button>
-          <button type="reset" variant="primary">Reset</button>
+          <b-button type="submit" variant="outline-info">Submit</b-button>
+          <b-button type="reset" variant="outline-danger">Reset</b-button>
         </b-form>
       </b-modal>
     </div>
@@ -128,9 +147,13 @@ export default {
         genre: "",
         played: [], //is an array cause it's a checkbox
       },
+      message: "",
+      showMessage: false,
     };
   },
+
   methods: {
+    // GET Function
     getGames() {
       const path = "http://localhost:5001/games";
       axios
@@ -142,6 +165,50 @@ export default {
         .catch((err) => {
           console.error("Error fetching games: ", err);
         });
+    },
+
+    // Post Function
+    addGame(payload) {
+      const path = "http://localhost:5001/games";
+      axios
+        .post(path, payload)
+        .then(() => {
+          this.getGames();
+          this.message = "Game Added Successfully!";
+          this.showMessage = true;
+          setTimeout(() => {
+            this.showMessage = false;
+          }, 3000);
+        })
+        .catch((err) => {
+          console.error("Error fetching games: ", err);
+          this.getGames();
+        });
+    },
+    initForm() {
+      this.addGameForm.title = "";
+      this.addGameForm.genre = "";
+      this.addGameForm.played = [];
+    },
+
+    onSubmit(event) {
+      event.preventDefault();
+      this.$refs.addGameModal.hide();
+      let played = false;
+      if (this.addGameForm.played[0]) played = true;
+      const payload = {
+        title: this.addGameForm.title,
+        genre: this.addGameForm.genre,
+        played,
+      };
+      this.addGame(payload);
+      this.initForm();
+    },
+
+    onReset(event) {
+      event.preventDefault();
+      this.$refs.addGameModal.hide();
+      this.initForm();
     },
   },
   created() {
