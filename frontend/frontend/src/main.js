@@ -4,7 +4,7 @@ import router from "./router";
 // install bootstrap
 import "bootstrap/dist/css/bootstrap.css";
 // Import the BootstrapVue library
-import BootstrapVue from "bootstrap-vue/dist/bootstrap-vue.css";
+import BootstrapVue from "bootstrap-vue";
 
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
