@@ -126,6 +126,59 @@
           <b-button type="reset" variant="outline-danger">Reset</b-button>
         </b-form>
       </b-modal>
+      <!-- End First Modal -->
+
+      <!-- Second Modal  -->
+
+      <b-modal
+        ref="editGameModal"
+        id="game-update-modal"
+        title="Update"
+        hide-backdrop
+        hide-footer
+      >
+        <b-form @submit="onSubmitUpdate" @reset="onResetUpdate" class="w-100">
+          <b-form-group
+            id="form-title-edit-group"
+            label="Title:"
+            label-for="form-title-edit-input"
+          >
+            <b-form-input
+              id="form-title-edit-input"
+              type="text"
+              v-model="editForm.title"
+              required
+              placeholder="Enter Title"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="form-genre-edit-group"
+            label="Genre:"
+            label-for="form-genre-edit-input"
+          >
+            <b-form-input
+              id="form-genre-edit-input"
+              type="text"
+              v-model="editForm.genre"
+              required
+              placeholder="Enter Genre"
+            ></b-form-input>
+          </b-form-group>
+
+          <!-- Checkbox -->
+          <b-form-group id="form-played-edit-group">
+            <b-form-checkbox-group v-model="editForm.played" id="form-checks">
+              <b-form-checkbox value="true"> Played? </b-form-checkbox>
+            </b-form-checkbox-group>
+          </b-form-group>
+          <!-- Buttons: submit and reset -->
+          <b-button type="submit" variant="outline-info">Update</b-button>
+          <b-button type="reset" variant="outline-danger">Cancel</b-button>
+        </b-form>
+      </b-modal>
+
+      <!-- End Second Modal -->
     </div>
   </div>
 </template>

@@ -61,10 +61,35 @@ def all_games():
       'genre': post_data.get('genre'),
       'played': post_data.get('played')
     })
-    respons_object['message']='Game added successfully.'
+    respons_object['message']='Game added successfully.' 
   else:
     respons_object['games'] = GAMES
   return jsonify(respons_object)
+
+# Put & Delete Route handler.
+@app.route('/games/<game_id>', methods=['PUT'])
+def single_game(game_id):
+  respons_object = {'status':'success'}
+  if request.method == 'PUT':
+    post_data = request.get_json()
+    remove_game = (game_id)
+    GAMES.append({       
+      'id': uuid.uuid4().hex,
+      'title': post_data.get('title'),
+      'genre': post_data.get('genre'),
+      'played': post_data.get('played') 
+    })
+    respons_object['message']='Game updated successfully.'    
+  return jsonify(respons_object)
+  
+  # Delete route handler
+  def remove_game(game_id):
+    for game in GAMES:
+      if game['id'] == game_id:
+        GAMES.remove(game)
+        return True
+    return False
+
 
 if __name__ == "__main__":
   # Run the Flask application with debug mode enabled
