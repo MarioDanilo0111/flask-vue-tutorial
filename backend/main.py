@@ -1,6 +1,9 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
+# Import 'uuid' from the 'uuid' library
+import uuid
+
 # Initialize the Flask application
 app = Flask(__name__)
 
@@ -53,6 +56,7 @@ def all_games():
   if request.method == 'POST':
     post_data = request.get_json()
     GAMES.append({
+      'id': uuid.uuid4().hex,
       'title': post_data.get('title'),
       'genre': post_data.get('genre'),
       'played': post_data.get('played')
