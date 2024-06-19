@@ -55,7 +55,12 @@
                 </td>
                 <td>
                   <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-info btn-sm">
+                    <button
+                      type="button"
+                      class="btn btn-info btn-sm"
+                      v-b-modal.game-update-modal
+                      @click="editGame(game)"
+                    >
                       Edit
                     </button>
                     <button type="button" class="btn btn-danger btn-sm">
@@ -194,6 +199,12 @@ export default {
         genre: "",
         played: [], //is an array cause it's a checkbox
       },
+      editForm: {
+        id: "",
+        title: "",
+        genre: "",
+        played: [],
+      },
       message: "",
       showMessage: false,
     };
@@ -256,6 +267,26 @@ export default {
       event.preventDefault();
       this.$refs.addGameModal.hide();
       this.initForm();
+    },
+
+    // Update Function
+    upadteGame(payload, gameID) {
+      const path = `http://localhost:5001/games/${gameID}`;
+      axios
+        .get(path, payload)
+        .then(() => {
+          this.getGames();
+          this.message = "Game Updated Successfully!";
+          this.showMessage = true;
+        })
+        .catch((err) => {
+          console.error("Error fetching games: ", err);
+          this.getGames();
+        });
+    },
+
+    editGame(game) {
+      this.editForm = game;
     },
   },
   created() {
