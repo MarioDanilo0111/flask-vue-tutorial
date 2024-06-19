@@ -249,6 +249,7 @@ export default {
       this.addGameForm.played = [];
     },
 
+    /* For Modal 1 Submit a new Game */
     onSubmit(event) {
       event.preventDefault();
       this.$refs.addGameModal.hide();
@@ -263,10 +264,25 @@ export default {
       this.initForm();
     },
 
+    /* For Modal 1 Reset Form */
     onReset(event) {
       event.preventDefault();
       this.$refs.addGameModal.hide();
       this.initForm();
+    },
+
+    /* For Modal 2 Submit an updated Game */
+    onSubmitUpdate(event) {
+      event.preventDefault();
+      this.$refs.editGameModal.hide();
+      let played = false;
+      if (this.editForm.played[0]) played = true;
+      const payload = {
+        title: this.addGameForm.title,
+        genre: this.addGameForm.genre,
+        played,
+      };
+      this.upadteGame(payload, this.editForm.id);
     },
 
     // Update Function
