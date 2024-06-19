@@ -278,11 +278,19 @@ export default {
       let played = false;
       if (this.editForm.played[0]) played = true;
       const payload = {
-        title: this.addGameForm.title,
-        genre: this.addGameForm.genre,
+        title: this.editGameForm.title,
+        genre: this.editGameForm.genre,
         played,
       };
       this.upadteGame(payload, this.editForm.id);
+    },
+
+    /* Cancel Button Click */
+    onResetUpdate(event) {
+      event.preventDefault();
+      this.$refs.editGameModal.hide();
+      this.initForm();
+      this.getGames();
     },
 
     // Update Function
