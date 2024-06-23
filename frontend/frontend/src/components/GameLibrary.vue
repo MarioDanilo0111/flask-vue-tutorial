@@ -63,7 +63,11 @@
                     >
                       Edit
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm">
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      @click="deleteGame(game)"
+                    >
                       Delete
                     </button>
                   </div>
@@ -304,13 +308,37 @@ export default {
           this.showMessage = true;
         })
         .catch((err) => {
-          console.error("Error fetching games: ", err);
+          console.error("Error updating games: ", err);
           this.getGames();
         });
     },
 
+    // Delete Function
+    removeGame(gameID) {
+      const path = `http://localhost:5001/games/${gameID}`;
+      axios
+        .delete(path)
+        .then(() => {
+          this.getGames();
+          this.message = "Game Removed Successfully!";
+          this.showMessage = true;
+          setTimeout(() => {
+            this.showMessage = false;
+          }, 3000);
+        })
+        .catch((err) => {
+          console.error("Error deleting games: ", err);
+          this.getGames();
+        });
+    },
+
+    // Edit Function
     editGame(game) {
       this.editForm = game;
+    },
+    /* handler for delete button */
+    deleteGame(game) {
+      this.removeGame(game.id);
     },
   },
   created() {

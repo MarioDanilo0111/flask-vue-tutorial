@@ -22,26 +22,31 @@ def shark():
 
 GAMES = [
   {
+    'id': uuid.uuid4().hex,
    'title':'Halo 3',
    'genre': 'Action',
    'played': False,
    },
   {
+    'id': uuid.uuid4().hex,
    'title':'2k21',
    'genre': 'sports',
    'played': False, 
    },
   {
+    'id': uuid.uuid4().hex,
    'title':'last of us',
    'genre': 'horror',
    'played': True,
    },
   {
+    'id': uuid.uuid4().hex,
    'title':'mario',
    'genre': 'retro',
    'played': True,
    },
   {
+    'id': uuid.uuid4().hex,
    'title':'mortal kombat',
    'genre': 'acction',
    'played': True, 
@@ -67,27 +72,30 @@ def all_games():
   return jsonify(respons_object)
 
 # Put & Delete Route handler.
-@app.route('/games/<game_id>', methods=['PUT'])
+@app.route('/games/<game_id>', methods=['PUT', 'DELETE'])
 def single_game(game_id):
   respons_object = {'status':'success'}
   if request.method == 'PUT':
     post_data = request.get_json()
-    remove_game = (game_id)
+    remove_game(game_id)
     GAMES.append({       
       'id': uuid.uuid4().hex,
       'title': post_data.get('title'),
       'genre': post_data.get('genre'),
       'played': post_data.get('played') 
     })
-    respons_object['message']='Game updated successfully.'    
+    respons_object['message']='Game updated successfully.'  
+  if request.method == 'DELETE':
+      remove_game(game_id)
+      respons_object['message']='Game removed successfully.'
   return jsonify(respons_object)
   
   # Delete route handler
-  def remove_game(game_id):
+def remove_game(game_id):
     for game in GAMES:
       if game['id'] == game_id:
-        GAMES.remove(game)
-        return True
+         GAMES.remove(game)
+         return True
     return False
 
 
